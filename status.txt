@@ -1,4 +1,7 @@
 Status - Devin Dennis
 
 9/16/2025 2:20 PM
-I'm currently installing Kali on my Laptop windows 11. I will update this when I'm done
+I'm currently installing Kali on my Laptop windows 11. I will update this when I'm done.
+
+9/16/2025 2:51 PM
+I have installed Kali.
