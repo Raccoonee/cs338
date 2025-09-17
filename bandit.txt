@@ -1,0 +1,283 @@
+Devin Dennis - Bandit
+
+Lvl 0 -> 1
+password: bandit0
+just logged in via ssh given the user and pass of the site
+
+next I did ls to see the files. I found readme file.
+I did "cat readme" and the password was in there
+
+password for lvl 1: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+
+Lvl 1 -> 2
+for this one I needed to input the file into the cat function because dashes
+are used for params.
+
+So I ran:
+bandit1@bandit:~$ ls
+-
+bandit1@bandit:~$ cat < -
+263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+
+Password for 2: 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+
+Lvl 2 -> 3
+Doing some research online, I found that files with spaces need a backslash to run
+the command
+
+I ran: 
+bandit2@bandit:~$ cat < --spaces\ in\ this\ filename--
+
+I got the password for 3: MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+
+Lvl 3 -> 4
+
+Here's what I did:
+bandit3@bandit:~$ ls
+inhere
+bandit3@bandit:~$ cd inhere
+bandit3@bandit:~/inhere$ ls
+bandit3@bandit:~/inhere$ ls -al
+total 12
+drwxr-xr-x 2 root    root    4096 Aug 15 13:16 .
+drwxr-xr-x 3 root    root    4096 Aug 15 13:16 ..
+-rw-r----- 1 bandit4 bandit3   33 Aug 15 13:16 ...Hiding-From-You
+bandit3@bandit:~/inhere$ cat ...Hiding-From-You
+2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+bandit3@bandit:~/inhere$
+
+the password was in a hidden file and used the -al to show it
+
+password for 4: 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+
+Lvl 4 -> 5
+
+I ran this:
+bandit4@bandit:~$ ls
+inhere
+bandit4@bandit:~$ cd inhere
+bandit4@bandit:~/inhere$ ls
+-file00  -file02  -file04  -file06  -file08
+-file01  -file03  -file05  -file07  -file09
+bandit4@bandit:~/inhere$
+bandit4@bandit:~/inhere$ find -type f -exec cat {} +
+4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+Jߑߟ����>jŠ␦��C�f�w��f>�<?�x����/vSژ�5f`}�3Y�ׯ��=9]@�9��I�}�v,��C�����Cy>f�|7�`i�}
+              �ت�=ؑ�Hz����1�Uk�U���켼�U�
+�qf�`HԿB�K�����E��\G��D\�G�I�d�� �`"��g���      '�����␦�>��@F��kYq~Jjs�o��;���6���d�H�
+                   ��u.Tq␦`h���Ee�+�<��"!^"Y��:bl�A��t�1�ν%gM�����
+
+I didn't want to cat every file in the directory inhere, so I looked up a command to 
+run cat on every file in the directory. If I didn't know this command I would've 
+ran cat < [filename] on each until I found the password
+
+this find command finds files only and excutes all files found in inhere.
+
+password for 5: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+
+Lvl 5 -> 6
+
+I ran this:
+bandit5@bandit:~/inhere$ find -type f -exec ls -la {} +
+
+...
+-rw-r----- 1 root bandit5 1033 Aug 15 13:16 ./maybehere07/.file2
+...
+
+bandit5@bandit:~/inhere$ cd maybehere07
+bandit5@bandit:~/inhere/maybehere07$ cat < .file2
+HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+bandit5@bandit:~/inhere/maybehere07$
+
+I ran a similar command to lvl 4 but I executed the ls -la to list all files and bytes sizes to find the 1033 byte file
+
+Password for 6: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+
+Lvl 6 -> 7
+
+This is what I ran:
+bandit6@bandit:/var/lib/dpkg/info$ find / -size 33c -user bandit7 -group bandit6
+
+each of these params helped narrowed down the search
+
+Searched among the many permission denied files until I found: /var/lib/dpkg/info/bandit7.password
+
+Then, I cd into that file and cat to get the password.
+
+This one was more tough because I was searching in the wrong places. I wasn't in the root level so I wasn't checking all possile files.
+I did look up how to search by size, group, and user.
+
+Password for 7: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+
+Lvl 7 -> 8
+
+Here's what I ran:
+bandit7@bandit:~$ grep "millionth" data.txt
+millionth       dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+bandit7@bandit:~$
+
+This one was easier because I'm familiar with the grep command to search for text in a file
+
+Password for 8: dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+
+
+lvl 8 -> 9
+
+I ran this:
+bandit8@bandit:~$ sort data.txt | uniq -c
+     10 0dG1X72ls0kRH02czB3k2gdjntQoHGVv
+     10 0ZdojRHKYMZ2HH75mmFbUIBR8K8DRJTx
+     10 1FZh48ZaVPQSphjoyxSMLzIQbXp7oKKT
+     10 2hzECtVb4C4PLXGIgYH6eVBLBJcJmym3
+     10 2zJA8BRN8FYM2cVW6K7vTIcfpdzfXLLF
+     10 3mFwCPqJL0HVwTZ83w5nNV079jFXcfB6
+     10 3oYgS0Otrx9fUslMcV8VgGzWgHdh7HEf
+      1 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+     10 4MzNiD7cvLgloLYRepsc6EggOJUiP7Yk
+     10 5nklcLzhHbHG6ZArTrCN6m7w1UOik3XT
+     10 5XcaRFaokJjKKw6qX0XiNihLfAMfN1sI
+     10 673BqoPWKZRdndmlDhOJLi4EYNjBjvLq
+     10 6h97TdcdpF2BJ2UKR8i9qsBrgGLmpTWO
+     10 80sDlObs5liuCwrhFPZoUwPPqbFu6mPh
+     10 8N7a4ktvymA5lA7zynTwLQHelyy0I9BY
+     10 8pEWEuO7dPuweqlpwujto8xT07j9W7Q2
+     10 9srwTZ1TzMRYmZ5Xhk7uWDX6KWztB6Nt
+     10 ARtGzJPICthTWu7pM4YWs4U4lDwruYBd
+     10 atgJspQcdXRx0Q4ardEAAb9InCXnHsC6
+     10 BK61wx8zMaFWw7IW29ewLQEQ7VikMAe0
+     10 bNsjgPmhNAN5l8BV9gpGf79tFxVqruwH
+     10 bpy71E9arX47Em0S85w7DpcKqS1BMdZT
+     10 BUoKJMbdwEVuCnyLcCafIqkquIPYrpWl
+     10 CbGnhQbYzfKAmu9Ho6C3IcR0IxuNOWN7
+     10 cv4xxF8fMZDJ7vYgq8QkyUWHm19gaYaA
+     10 cZ0fEglzYJXozGZUOX348ECJniOHmAm8
+     10 dDYhnLrPEhjmvVZJHRlbxE8NXwuZKzDY
+     10 djUfMducyTjQ8ws13L9PXvkdZlMLfCDF
+     10 DkGeAULNqGTgaB90BH3t9rOZEPcKIYMs
+     10 e3lSQMowsu27xVsaWSeTMLM1ASKnhweB
+     10 eCOOhNb9trA5Nu98RPSDfJnjJCR0gMVV
+     10 EuBGVSRQcP4pcBqtmd9Cx847EctZeLCw
+     10 fHfLq3ef6nX4vBKElBN4DKjzFH8gzdNp
+     10 flwlLshw1mbZtTzqFrv2VYfLySltkMxY
+     10 G9OXHT9Cy3oo1OWzK7wV1jWbDjGKSbec
+     10 gaFB2nTNG3cAodJSjsX7eKKE47CMramZ
+     10 GQ4wAjNSfOJn5Mvk2sdR0bUE9YjvsRBf
+     10 HIEGgVs3ftj7aQ5nmcfw1YO8srpD3jK7
+     10 hmTudvvyqHBYyG2pNCwTGFDiq4J3stvg
+     10 hNIcZ0T1SHj3huNgh40wR7SOT4UA31Ny
+     10 HOEoXbtISVu0QqVHrZ9KDuVh2DoiWhG6
+     10 HRC21WmkGerFOMUKMfHXPQkauGu4Knjl
+     10 i27dfHTIa5rhsUjB6z82acg5vnwXVn0C
+     10 iEgATmRTY0VrDiDTQWZ5pNlIE03Guagh
+     10 IgS0ihfJ6FRa4Vy1Yc4q1jPKOKsE1nqQ
+     10 IiZdgubaS3WMzaQE8UuW1ufvwLI6GhI9
+     10 IjFT4Oo38KnlaistkxmojU8SJdJvvLVJ
+     10 Iw58cnmk5Qda2NJY0ryOZ32azIVMrYxg
+     10 iXXM1VyYrJmtC0md0Lyv61CJpaUqfTCw
+     10 J2l4GzBsqAkHkDatFS73Ru8mnE8OKQWX
+     10 J385CcLBEQdXaHMNOg5MKn4RapAJU9uu
+     10 J4QalOzRremcN2u2bLz60o1exVc1BmCf
+     10 JmUnJFpCGCdkQRTfV22BNrEAUXTZYv8f
+     10 joK9jsQZ5WecQwqLCYowTNOCHvBOKb0s
+     10 kEwd7MRIQN55HA3fIAVvPHyc2kuIclZ5
+     10 KN9FXecV1tdXaz1dYt1PO3KbA9C0wjEj
+     10 lmajcYkgWSZqHODeUUVuUQZL77k9i7uM
+     10 LSxtQ4mhKW5m3XHwy08BiANka56hcFab
+     10 m69Hyh1K8iKphzyiGlkg1eMFvlwKwDF8
+     10 mjwyoPGRg0MNf2FD6StRr4xdvpc0um5o
+     10 mQmYUj6RZg7SMphIiM0pwkPlAPFCuhcB
+     10 mRTRnIiTMLL2wySvUUDmvTlQom9UpCxf
+     10 MVYorjJ6sTVVWZ4ZwRPYaHR8VlhqtQr2
+     10 mzyAZfclxEygCFATZoeEkwRTouz5g1k7
+     10 N6gK0tSzJg9HnkYfzJeR4hJFTPfs3w0X
+     10 n6Vgl9jsn7Xf2vBE5KtLDkjf3CNNqSn8
+     10 nf4RO5JZhooMY9oVyxhwGYkpGmteMugo
+     10 nuL05JHZV2A96b4bpxbduqFXk25n9qkK
+     10 nzHthimT1P6NNqwZkdqqkTwUreNl2BB1
+     10 o4OcYvYNbPrnvv4UmkalilJ75uOXwkRp
+     10 OB9Nyktly26CkBe0GNbewm6mZC0dgoS4
+     10 oqpG2B24zQoXlq3ke6Fz3q99Ip2RfK6s
+     10 P3A9rsSd9DnAsLpPZKXsMeZahfRBhqEa
+     10 pFHWMxXaHfl5Dni6F0ikM5lQo2d83wDn
+     10 q2ptuUrdRrv6xRzTZ0ir3SefGwx52lYw
+     10 Q3DFTN5rs6YTohZhOmrT1pkJopfJRVOB
+     10 Q5U9ApoaoRzWYbH1XgTa1ubeYjkikXQN
+     10 QFF9c31qVtArioy1lA8oVBI4SUmj4CbA
+     10 qK8yXfolE3meZstvdwLlMWc2ye7BNKB9
+     10 qrMctbCodjnykd7mXIHUFdJesdaNkonh
+     10 QSZAEdbRb6cqTl1ZWwCYbSOSkQ9cGlRS
+     10 r60qdgk5LMbAsoJSGT2bVqZP6WTmE4Aa
+     10 rdUb4FCmBYlMSgmvE49uXEVuYnIzMT8n
+     10 RnijAWu1vGLjdNAjNWrNp12uLmGmQm9t
+     10 RPCKeyEsOf1gYmZh9fgwFbey7q6raGwb
+     10 s75VjkmGv9MagYyJSDv69SdFH3bTrcKE
+     10 T4MLsVQX9g6x8U3r4dSTxePRo47wovIP
+     10 UOPjxpMvo2A9VgHujD5WCPrGlGB5j86R
+     10 UzDDkTb4s75KWngBxKeGVq2IyM2soq2X
+     10 uZKa9EWmvUTQogM5haJ5l3ZO91yJfoIn
+     10 VUEhhGjQBF0TBJKfOQOi8lVWriCVk3c2
+     10 vW5oXruloPrjc2kx7mRzkdz8U045cFCw
+     10 Vzne7meGBr8TtnbPFgpN70iuHbyaaQj8
+     10 W9gFtP4n5NtK9vOJ3Uc71UNrrTj33fTL
+     10 wqtP27JoIiJbHpS8hivte2oTHW3ur4jK
+     10 WQtVe7ngAumUvILPFAyPsGqdvuHaLMda
+     10 wvsmdv9QmthBfPxnj4XXzUKAaSA97Rxo
+     10 Wz3seCeSqy8Nz3bLRLZFolOeLYUrXROs
+     10 Y4U04rGSrheOdOoBzTTUoM81nhuKvnIw
+     10 yndxoLzewo2ip9SjlpkFDioUN2krAJO8
+     10 YoxyBMpsIWJ45bCQkxvwNRlZK1Q6Zrjv
+bandit8@bandit:~$
+
+I looked up both sort and uniq commands. first I tried sorting by unique lines but that gave me a list of just 1 duplicate.
+since uniq only detects adjacent lines, I piped the sorted text into that command and found that I can list the count of each.
+
+Password for 9: 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+
+Lvl 9 -> 10
+
+for this one I was trying out commands from the hints
+
+I ran: bandit9@bandit:~$ strings data.txt
+
+then I looked for a string that looked like that password after many ===== characters
+
+password for 10: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+
+Lvl 10 -> 11
+
+Here's what I ran:
+bandit10@bandit:~$ base64 data.txt -d
+The password is dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+bandit10@bandit:~$
+
+I just needed to decode the text file using the -d param
+
+Password for 11: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+
+Lvl 11 -> 12
+
+First I did this:
+bandit11@bandit:~$ cat data.txt
+Gur cnffjbeq vf 7k16JArUVv5LxVuJfsSVdbbtaHGlw9D4
+
+I realized that it was a ceasar cypher and looked into the tr command to shift the letters
+
+I ran this: 
+bandit11@bandit:~$ cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+The password is 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+bandit11@bandit:~$
+
+Password for 12: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+
+
+
+
+
+
+
+
+
+
+
+
+
