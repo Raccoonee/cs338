@@ -1,0 +1,76 @@
+Devin Dennis - Wireshark
+
+===== DAYTIME =====
+
+Identify the parts of the TCP 3-way handshake by listing the frame summaries of the relevant frames. Your summaries should looks something like this:
+
+1	0.000000000	10.0.2.15	129.6.15.28	TCP	74	43946 → 13 [SYN] Seq=0 Win=64240 Len=0 MSS=1460 SACK_PERM TSval=978431526 TSecr=0 WS=128
+2	0.114533452	129.6.15.28	10.0.2.15	TCP	60	13 → 43946 [SYN, ACK] Seq=0 Ack=1 Win=65535 Len=0 MSS=1460
+3	0.114671195	10.0.2.15	129.6.15.28	TCP	54	43946 → 13 [ACK] Seq=1 Ack=1 Win=64240 Len=0
+
+This is the initial handshake between my computer and the server
+
+What port number does the client (i.e. nc on your Kali computer) use for this interaction?
+
+Port 13
+
+Why does the client need a port?
+
+So the client knows which application is using that connection to the server 
+
+What frame contains the actual date and time? (Show the frame summary as in question 1 above.)
+
+4	0.154944664	129.6.15.28	10.0.2.15	DAYTIME	105	DAYTIME Response
+
+Frame 4, after the handshake
+
+What do [SYN] and [ACK] mean?
+
+SYN is synchronize which is the client/server asking to speak
+ACK is Acknowledge which is the client/server verifying that request to speak.
+ 
+Which entity (the nc client or the daytime server) initiated the closing of the TCP connection? How can you tell?
+
+The server because it sent a FIN which starts the end of the connection and waits for the client to confirm the connection end.
+
+===== HTTP ===== 
+
+How many TCP connections were opened? How can you tell?
+
+There were 4. By filtering SYN messages sent by the client, I see it sent 4 assuming 1 for a initial connection, the html page, and each photo.
+
+
+Can you tell where my homepage (index.html) was requested? (If not, why not? If so, include frame summaries and/or other info that supports your answer.)
+
+It was requested from here: 
+30	0.202731460	10.0.2.15	172.233.221.124	HTTP	424	GET /index.html HTTP/1.1 
+32	0.221095424	172.233.221.124	10.0.2.15	HTTP	667	HTTP/1.1 200 OK  (text/html)
+
+The server 200 response contained the html for the page
+
+Can you tell where my photograph (jeff-square-colorado.jpg) was requested? (If not, why not? If so, include frame summaries and/or other info that supports your answer.)
+
+There were requested from here:
+
+34	0.393142793	10.0.2.15	172.233.221.124	HTTP	463	GET /jeff-square-colorado.jpg HTTP/1.1 
+307	0.730931496	172.233.221.124	10.0.2.15	HTTP	1164	HTTP/1.1 200 OK  (JPEG JFIF image)
+
+47	0.419542961	10.0.2.15	172.233.221.124	HTTP	459	GET /misc/maisie-jeff.jpg HTTP/1.1 
+470	0.872993838	172.233.221.124	10.0.2.15	HTTP	9880	HTTP/1.1 200 OK  (JPEG JFIF image)
+
+It also requestion this icon:
+473	1.268405637	10.0.2.15	172.233.221.124	HTTP	447	GET /favicon.ico HTTP/1.1 
+475	1.287379919	172.233.221.124	10.0.2.15	HTTP	383	HTTP/1.1 404 Not Found  (text/html)
+
+I didn't find this icon.
+
+===== QUESTIONS =====
+
+When the initial handshake is done, how does the client know what to request for?
+
+Why is there multiple connections being made? Is a new connection needed for each image/html page or can it be done on 1 connection?
+
+
+
+
+
