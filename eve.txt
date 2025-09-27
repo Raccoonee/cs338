@@ -1,0 +1,91 @@
+Devin Dennis - Being Eve
+
+========= Diffie Hellman ==========
+
+Here's what I did to find the shared secret key:
+
+in Diffie-Hellman.py
+p = 103
+g = 5
+A=10
+B=71
+
+for a in range(1, 103):
+    for b in range(1, 103):
+        if ((g**b) % p) == A and ((g**a) % p) == B:
+            print(f"a={a}, b={b}")
+            print(f"Secret key: {(g**(a*b)) % p}")
+            break
+
+Since we know that little a < P and b < P, then there's only p^2 possible combinations of hidden keys.
+I wrote this script to go through every possible pairing of a and b and did the calculation on each to match
+the big A and B sent from Alice and Bob. Once I figured out a and b I could find out the secret key K = g^a*b % p
+
+here's what I got when running this:
+a=67, b=45
+Secret key: 31
+
+This script would not work if the prime was really big since it would grow quadratically. Also it would take
+a long time to calculate the modular artimetic
+
+============ intercepted for RSA ============
+
+All code for the RSA decrypting is in rsa.py
+
+Here's the message from Alice to Bob: 
+Hey Bob, here's some cryptography history for you (https://en.wikipedia.org/wiki/The_Magic_Words_are_Squeamish_Ossifrage). Happy factoring, Alice.
+
+I reversed engineered the RSA encryption based on what I know. First I needed to find a p and q primes that n = p*q:
+
+e_bob = 17
+n_bob = 266473
+
+# Factor n_bob to find p and q
+# is_prime is a helper func in rsa.py
+for p in range(2, int(n_bob ** 0.5) + 1):
+    if n_bob % p == 0:
+        q = n_bob // p
+        if is_prime(p) and is_prime(q):
+            print(f"Found primes: p = {p}, q = {q}")
+            break
+
+p_bob = 439
+q_bob = 607
+
+with p and q, I was able to find least common multiple for lambda(n_bob):
+
+print(f"lamda_n_bob: {math.lcm(p_bob-1, q_bob-1)}")
+lambda_n_bob = 4423
+
+Now I need to find a integer d such that e_bob * d_bob % lambda(n_bob) = 1. I ran this:
+
+for d in range(1, lambda_n_bob):
+    if (d * e_bob) % lambda_n_bob == 1:
+        print(f"Found d: {d}")
+        break
+
+d_bob = 10409
+
+Once I got d_bob, I got the private key and start decoding with (d_bob, n_bob) using M^d_bob % n_bob where M is a chunk of the message.
+
+decrypted_values = [pow(c, d_bob, n_bob) for c in ciphertext]
+
+The hard part was figuring out how to translate the decrypted_values into readable text. At first I translated each block into a string and got Chinese charaters.
+I later figured out that I need to break them into the 256 bit chunks as Ascii. Here's the code below:
+
+message = ''
+for val in decrypted_values:
+    # Split into high byte and low byte
+    high_byte = val // 256
+    low_byte = val % 256
+    
+    # Convert to characters
+    message += chr(high_byte) + chr(low_byte)
+
+- Show precisely where in your process you would have failed if the integers involved were much larger.
+
+If the integers were bigger that the n_bob then it would overlap from the modular artimetic, causing data to be lost. So they need to be less than n_bob
+
+- Explain, briefly, why the message encoding Alice used would be insecure even if Bob's keys involved larger integers.
+
+Since this is a block cipher, once a adversary figures out 1 chunk of the data then they know all chunks that are the same since the key doesn't change for each block.
