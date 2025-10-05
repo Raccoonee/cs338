@@ -1,0 +1,82 @@
+Devin Dennis - Cryptographic Senarios
+
+Senario 1:
+Alice wants to send Bob a long message, and she doesn't want Eve to be able to read it. Assume for this scenario that AITM is impossible.
+
+Alice first want to encrypt her message using Symetric encryption, so Eve can't eavesdrop.
+To do so, Alice must perform a key exchange with bob using Diffie-Hellman to generate a K key and Initial Value (IV).
+Next, Alice can start sending her message using Cipher Block Chaining with the K and IV:
+
+C1 = AES(K, M1 ⊕ IV)
+C2 = AES(K, M2 ⊕ C1)
+C3 = AES(K, M3 ⊕ C2)
+C4 = AES(K, M4 ⊕ C3)
+...
+
+Once complete, Alice sends the C1 .. C4 chunks to Bob. Then Bob can use the same K and IV to decrypt.
+Eve will not be able to read the message since it's encrypted.
+
+Senario 2:
+Alice wants to send Bob a long message. She doesn't want Mal to be able to modify the message without Bob detecting the change.
+
+Alice would first need to take the message along with a signed hashed version of the message using her private key:
+
+(M, E(S_A,(H(M)))
+
+Then Bob can hash the message M and decrypt E(P_A, E(S_A,(H(M)))) and check if they are exactly the same. If they are then
+the data hasn't been modify. Otherwise, bob will realize it's been changed because the hashes won't match.
+
+Senario 3:
+Alice wants to send Bob a long message (in this case, it's a signed contract between AliceCom and BobCom), she doesn't want Eve to be able to read it, and she wants Bob to have confidence that it was Alice who sent the message. Assume for this scenario that AITM is impossible.
+
+Alice and Bob will agrees to use Diffie-Hellman to generate a Key K
+
+Alice will send bob a (AES(K, M), E(S_A,(H(M)))).
+
+Bob can take the encripted C = AES(K, M) and perform M = AES_D(K, C).
+Then Bob takes the encrypted Hashed M and decrypt it using Alice's public key: E(P_A, E(S_A,(H(M))))
+Then bob can compare the encrypted hashed M and hash the other M to see if the data has been modified.
+If all good, then the message has been unmodified and encrypted from Eve.
+
+Senario 4:
+
+- Alice could claim that someone stole her private key
+Someone got a hold of Alice's private key. If someone did they could completely change the message M and 
+the signature to validate the data. It would still be in tact since bob would verify it with Alice's public key.
+- Alice could claim that he decrypted it incorrectly with the wrong key or hash function to verify
+Bob could have a his computer compromised with a bad hash function so that an attacker can send a new file to Bob.
+Bob could've decrypted a different document and hashed to verify, but his hash function is faulty thinking it's alice.
+- Alice could claim that Bob modified the contract.
+Everything with the data transfer and integrity was good, but Bob changed the doc. Alice can see if the file
+she sent and the file Bob modified match if they hash both of them. If they matched, then Bob could've modified it or
+something else was broken in verifying authenticity of the doc from Alice.
+
+Senario 5:
+
+Cert_B = 'bob.com' || P_B || Sig_CA
+
+Sig_CA = E(S_CA, H('bob.com' || P_B))
+
+To verify the certificate: E(P_CA, Sig_CA) = H('bob.com' || P_B) from cert_B
+but this doesn't validate that it's actually bob just that the CA believes it's bob with this Public key
+
+Senario 6:
+
+Alice can create a challenge by encrypting a number using Bob's public key (P_B). Then Bob can decrypt it using is private key (S_B) and sent the number back.
+But making sure the bob sends it number back using Alice's public key so that no Mal can change the number in transit.
+
+
+
+Senario 7:
+
+- Mal can steal the private key of certifcate authority
+Mal can take the S_CA to sign certifcates for websites like bob.com and have Mal put their own public key for that website.
+Then whenever Alice wants to verify that it's bob.com, she could send a challenge to see if it's bob. But Mal will have the private
+key to the exchange since bob's public and private keys are shown to be owned by Mal.
+
+
+- Mal can steal the private key of Bob
+If Mal takes bob's private key, then Mal can impersonate Bob. Mal can still use the certifcate to validate Bob's public key
+, but Mal can use bob's private key bypass any challenge that Alice would send to verify the public/private key pair.
+
+
