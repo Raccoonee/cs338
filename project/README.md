@@ -56,9 +56,9 @@ This setup helps illustrate:
 A short video walkthrough demonstrates:
 - Setting up the OpenVPN server on Linode.  
 - Connecting to the VPN from a client machine.  
-- Verifying the encrypted tunnel and new IP address.  
+- Verifying the encrypted tunnel and new IP address.
 
-**Watch the demo here:** `https://youtu.be/UCidO5g1VLA`
+[Watch the demo here](https://youtu.be/UCidO5g1VLA)
 
 ---
 
